@@ -10,3 +10,6 @@
 # 
 # Example: 10.4:/opt/postgres/10.4:/opt/postgres/10.4/data:1123:N
 # }}}
+11.1:/opt/postgres/11.1:/opt/postgres/11.1/data:5432:N
+10.6:/opt/postgres/10.6:/opt/postgres/10.6/data:5432:N
+11.2:/opt/postgres/11.2:/opt/postgres/11.2/data:5432:N

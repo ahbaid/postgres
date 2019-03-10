@@ -89,9 +89,12 @@ pgset () {
    if [ "$#" -gt 0 ]; then
       if [ `cat $PG_TAB | grep -v ^# | grep ^$1 | wc -l` -eq 1 ]; then
          export PG_HOME=`cat $PG_TAB | grep -v ^# | grep ^$1 | awk -F: '{print $2}'`
+         export PG_DATA=`cat $PG_TAB | grep -v ^# | grep ^$1 | awk -F: '{print $3}'`
+         export PG_PORT=`cat $PG_TAB | grep -v ^# | grep ^$1 | awk -F: '{print $4}'`
          alias pghome="cd $PG_HOME"
          export PG_BIN=$PG_HOME/bin
          alias pgbin="cd $PG_BIN"
+         alias pgdata="cd $PG_DATA"
          export PG_MAN=$PG_HOME/man
          export PG_VERSION=$1
          export PATH=$OPATH:$PG_BIN
@@ -112,11 +115,14 @@ pgset () {
 
 pgunset () {
    unset PG_HOME
-   unalias pghome
    unset PG_BIN
-   unalias pgbin
    unset PG_MAN
    unset PG_VERSION
+   unset PG_DATA
+   unset PG_PORT
+   unalias pghome
+   unalias pgbin
+   unalias pgdata
    export PATH=$OPATH
    export MANPATH=$OMANPATH
    export PS1=$OPS1
@@ -132,6 +138,8 @@ pginfo () {
       echo -e "==========================="
       echo -e "Version:  $PG_VERSION"
       echo -e "Postgres Home: $PG_HOME"
+      echo -e "Postgres Data: $PG_DATA"
+      echo -e "Postgres Port: $PG_PORT"
       echo -e "\n"
       echo -e "Path: $PATH"
       echo -e "Manpath: $MANPATH"
