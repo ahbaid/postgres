@@ -1,7 +1,7 @@
 # {{{ Metadata
 # Author: 	Ahbaid Gaffoor
 # Date: 		Sunday 10th March 2019
-# File:		psotgresql.template
+# File:		postgresql.template
 # Use:		Template to generate postgresql.conf in the target directory
 # }}}
 
