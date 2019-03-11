@@ -63,6 +63,11 @@ autovacuum_work_mem = -1 # -1 to use maintenance_work_mem
 dynamic_shared_memory_type = posix	
 # }}}
 
+# {{{ Locking
+deadlock_timeout = 1s
+max_locks_per_transaction = 64		# min 10
+# }}}
+
 # {{{ Cost-Based Vacuum Delay 
 #vacuum_cost_delay = 0			# 0-100 milliseconds
 #vacuum_cost_page_hit = 1		# 0-10000 credits
@@ -200,147 +205,38 @@ autovacuum_analyze_scale_factor = 0.1	# fraction of table size before analyze
 
 # }}}
 
+# {{{ Client Behavior 
+client_min_messages = notice		# debug5 | debug4 | debug3 | debug2 | debug1 | log | notice | warning | error
+statement_timeout = 0			# in milliseconds, 0 is disabled
+lock_timeout = 0			# in milliseconds, 0 is disabled
+idle_in_transaction_session_timeout = 0	# in milliseconds, 0 is disabled
+# }}}
 
-#------------------------------------------------------------------------------
-# CLIENT CONNECTION DEFAULTS
-#------------------------------------------------------------------------------
-
-# - Statement Behavior -
-
-#client_min_messages = notice		# values in order of decreasing detail:
-					#   debug5
-					#   debug4
-					#   debug3
-					#   debug2
-					#   debug1
-					#   log
-					#   notice
-					#   warning
-					#   error
-#search_path = '"$user", public'	# schema names
-#row_security = on
-#default_tablespace = ''		# a tablespace name, '' uses the default
-#temp_tablespaces = ''			# a list of tablespace names, '' uses
-					# only default tablespace
-#check_function_bodies = on
-#default_transaction_isolation = 'read committed'
-#default_transaction_read_only = off
-#default_transaction_deferrable = off
-#session_replication_role = 'origin'
-#statement_timeout = 0			# in milliseconds, 0 is disabled
-#lock_timeout = 0			# in milliseconds, 0 is disabled
-#idle_in_transaction_session_timeout = 0	# in milliseconds, 0 is disabled
-#vacuum_freeze_min_age = 50000000
-#vacuum_freeze_table_age = 150000000
-#vacuum_multixact_freeze_min_age = 5000000
-#vacuum_multixact_freeze_table_age = 150000000
-#vacuum_cleanup_index_scale_factor = 0.1	# fraction of total number of tuples
-						# before index cleanup, 0 always performs
-						# index cleanup
-#bytea_output = 'hex'			# hex, escape
-#xmlbinary = 'base64'
-#xmloption = 'content'
-#gin_fuzzy_search_limit = 0
-#gin_pending_list_limit = 4MB
-
-# - Locale and Formatting -
-
+# {{{ Locale and Formatting 
 datestyle = 'iso, mdy'
-#intervalstyle = 'postgres'
+intervalstyle = 'postgres'
 timezone = 'US/Pacific'
-#timezone_abbreviations = 'Default'     # Select the set of available time zone
-					# abbreviations.  Currently, there are
-					#   Default
-					#   Australia (historical usage)
-					#   India
-					# You can create your own file in
-					# share/timezonesets/.
-#extra_float_digits = 0			# min -15, max 3
-#client_encoding = sql_ascii		# actually, defaults to database
-					# encoding
+lc_messages = 'en_US.UTF-8'	# locale for system error message strings
+lc_monetary = 'en_US.UTF-8'	# locale for monetary formatting
+lc_numeric = 'en_US.UTF-8'		# locale for number formatting
+lc_time = 'en_US.UTF-8'			# locale for time formatting
+# }}}
 
-# These settings are initialized by initdb, but they can be changed.
-lc_messages = 'en_US.UTF-8'			# locale for system error message
-					# strings
-lc_monetary = 'en_US.UTF-8'			# locale for monetary formatting
-lc_numeric = 'en_US.UTF-8'			# locale for number formatting
-lc_time = 'en_US.UTF-8'				# locale for time formatting
-
-# default configuration for text search
+# {{{ Text Search
 default_text_search_config = 'pg_catalog.english'
+# }}}
 
-# - Shared Library Preloading -
+# {{{ Error Handling
+exit_on_error = off				# terminate session on any error
+restart_after_crash = on		# reinitialize after backend crash
+data_sync_retry = off			# retry or panic on failure to fsync data
+# }}}
 
-#shared_preload_libraries = ''	# (change requires restart)
-#local_preload_libraries = ''
-#session_preload_libraries = ''
-#jit_provider = 'llvmjit'		# JIT library to use
-
-# - Other Defaults -
-
-#dynamic_library_path = '$libdir'
-
-
-#------------------------------------------------------------------------------
-# LOCK MANAGEMENT
-#------------------------------------------------------------------------------
-
-#deadlock_timeout = 1s
-#max_locks_per_transaction = 64		# min 10
-					# (change requires restart)
-#max_pred_locks_per_transaction = 64	# min 10
-					# (change requires restart)
-#max_pred_locks_per_relation = -2	# negative values mean
-					# (max_pred_locks_per_transaction
-					#  / -max_pred_locks_per_relation) - 1
-#max_pred_locks_per_page = 2            # min 0
-
-
-#------------------------------------------------------------------------------
-# VERSION AND PLATFORM COMPATIBILITY
-#------------------------------------------------------------------------------
-
-# - Previous PostgreSQL Versions -
-
-#array_nulls = on
-#backslash_quote = safe_encoding	# on, off, or safe_encoding
-#default_with_oids = off
-#escape_string_warning = on
-#lo_compat_privileges = off
-#operator_precedence_warning = off
-#quote_all_identifiers = off
-#standard_conforming_strings = on
-#synchronize_seqscans = on
-
-# - Other Platforms and Clients -
-
-#transform_null_equals = off
-
-
-#------------------------------------------------------------------------------
-# ERROR HANDLING
-#------------------------------------------------------------------------------
-
-#exit_on_error = off			# terminate session on any error?
-#restart_after_crash = on		# reinitialize after backend crash?
-#data_sync_retry = off			# retry or panic on failure to fsync data?
-
-
-#------------------------------------------------------------------------------
-# CONFIG FILE INCLUDES
-#------------------------------------------------------------------------------
-
-# These options allow settings to be loaded from files other than the
-# default postgresql.conf.
-
-#include_dir = 'conf.d'			# include files ending in '.conf' from
-					# directory 'conf.d'
+# {{{ Includes
+#include_dir = 'conf.d'					# include files ending in '.conf' from # directory 'conf.d'
 #include_if_exists = 'exists.conf'	# include file only if it exists
-#include = 'special.conf'		# include file
+#include = 'special.conf'				# include file
+# }}}
 
-
-#------------------------------------------------------------------------------
-# CUSTOMIZED OPTIONS
-#------------------------------------------------------------------------------
-
-# Add settings for extensions here
+# {{{ Extension Settings
+# }}}
