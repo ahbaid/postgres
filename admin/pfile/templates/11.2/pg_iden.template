@@ -1,4 +1,11 @@
-# PostgreSQL User Name Maps
+# {{{ Metadata
+# Author: 	Ahbaid Gaffoor
+# Date: 		Sunday 10th March 2019
+# File:		pg_iden.template
+# Use:		Template to generate pg_iden.conf in the target directory
+# }}}
+
+# {{{ PostgreSQL User Name Maps
 # =========================
 #
 # Refer to the PostgreSQL documentation, chapter "Client
@@ -35,8 +42,8 @@
 # a SIGHUP signal.  If you edit the file on a running system, you have
 # to SIGHUP the postmaster for the changes to take effect.  You can
 # use "pg_ctl reload" to do that.
-
-# Put your actual configuration here
-# ----------------------------------
+#
+# }}}
 
 # MAPNAME       SYSTEM-USERNAME         PG-USERNAME
+# ----------------------------------
